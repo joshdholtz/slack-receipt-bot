@@ -1,13 +1,16 @@
 defmodule SlackReceipt.Xero do
-  use HTTPoison.Base
 
   @consumer_key Application.get_env(:slackreceipt, :oauth)[:consumer_key]
   @consumer {@consumer_key, Application.get_env(:slackreceipt, :oauth)[:private_key_path], :rsa_sha1}
 
-  def request(method, url, params, body \\ %{}, headers \\ %{}, options \\ []) do
+  def accounts do
+    request(:get, "https://api.xero.com/api.xro/2.0/Accounts")
+  end
+
+  def request(method, url, params \\ [], body \\ %{}, headers \\ %{}, options \\ []) do
     # Creates signed params for oauth
     signed_params = :oauth.sign(
-      Atom.to_string(method) |> String.upcase, url, params, @consumer, @consumer_key, ""
+      Atom.to_string(method) |> String.upcase, String.to_char_list(url), params, @consumer, @consumer_key, ""
     )
 
     default_headers =  %{
@@ -17,6 +20,6 @@ defmodule SlackReceipt.Xero do
 
     headers = Map.merge(default_headers, headers)
 
-    super(method, url, "", headers, options)
+    HTTPoison.request(method, url, "", headers, options)
   end
 end

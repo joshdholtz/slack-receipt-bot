@@ -13,7 +13,7 @@ defmodule SlackReceipt.Xero do
 
   def post_file(path_to_file, folder_id) do
     method = :post
-    body = {:multipart, [ {"name", "a_name"}, {:file, path_to_file} ] }
+    body = {:multipart, [{:file, path_to_file}] }
     headers = %{
     }
     options = []
@@ -27,7 +27,7 @@ defmodule SlackReceipt.Xero do
       Atom.to_string(method) |> String.upcase, String.to_char_list(url), params, @consumer, @consumer_key, ""
     )
 
-    default_headers =  %{
+   default_headers =  %{
       "Authorization": "OAuth #{:oauth.header_params_encode(signed_params)}",
       "Accept": "application/json",
     }

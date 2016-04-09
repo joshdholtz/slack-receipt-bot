@@ -4,15 +4,23 @@ defmodule SlackReceipt.Slack do
   def handle_cast({:handle_incoming, "file_shared", msg}, state) do
     Logger.debug "A file was shared or something"
 
-    # TODO Download file and upload file to Xero
+    url = msg["file"]["permalink_public"]
 
-    #Exauth.sign("GET", "https://api.xero.com/api.xro/2.0/Accounts")
+    IO.inspect msg
+    IO.inspect url
 
-    #resp = Slackreceipt.Xero.get("https://api.xero.com/api.xro/2.0/Accounts", [])
-  
-    # http://oauth.net/core/1.0a/#anchor18
-    # http://erlang.org/doc/man/public_key.html
-    # :public_key.encrypt_private(M, K)
+    file_path = "/tmp/#{:os.system_time(:seconds)}.png"
+
+    IO.inspect file_path
+
+    body = HTTPoison.get!(url).body
+    File.write!(file_path, body)
+
+    IO.puts "About to upload"
+
+    resp = SlackReceipt.Xero.post_file(file_path, "some_file")
+
+    IO.inspect resp
 
     {:noreply, state}
   end

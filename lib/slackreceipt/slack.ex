@@ -7,7 +7,7 @@ defmodule SlackReceipt.Slack do
     Logger.debug "A file was shared or something"
     IO.inspect msg
     # Slack info
-    url = msg["file"]["permalink_public"]
+    url = msg["file"]["url_private_download"]
     user_id = msg["file"]["user"]
     title = msg["file"]["title"]
     name = msg["file"]["name"]
@@ -23,7 +23,7 @@ defmodule SlackReceipt.Slack do
     IO.inspect file_path
 
     # Download and save
-    body = HTTPoison.get!(url).body
+    body = HTTPoison.get!(url, %{"Authorization": "Bearer #{@slack_token}"}).body
     File.write!(file_path, body)
 
     # Upload

@@ -1,7 +1,7 @@
 defmodule SlackReceipt.Xero do
 
   @consumer_key Application.get_env(:slackreceipt, :oauth)[:consumer_key]
-  @consumer {@consumer_key, Application.get_env(:slackreceipt, :oauth)[:private_key_contents], :rsa_sha1}
+  @consumer {@consumer_key, System.get_env("XERO_PRIVATE_KEY_CONTENTS"), :rsa_sha1}
 
   def accounts do
     request(:get, "https://api.xero.com/api.xro/2.0/Accounts")

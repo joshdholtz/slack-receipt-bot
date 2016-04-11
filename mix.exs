@@ -32,6 +32,7 @@ defmodule SlackReceipt.Mixfile do
   defp deps do
     [{:websocket_client, github: "jeremyong/websocket_client"},
      {:slacker,  "~> 0.0.2"},
-     {:oauth, github: "tim/erlang-oauth"}]
+     {:oauth, github: "joshdholtz/erlang-oauth", branch: "private-key-contents"}]
+   #{:oauth, github: "tim/erlang-oauth"}]
   end
 end

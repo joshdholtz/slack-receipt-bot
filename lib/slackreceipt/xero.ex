@@ -1,7 +1,7 @@
 defmodule SlackReceipt.Xero do
 
   @consumer_key Application.get_env(:slackreceipt, :oauth)[:consumer_key]
-  @consumer {@consumer_key, Application.get_env(:slackreceipt, :oauth)[:private_key_path], :rsa_sha1}
+  @consumer {@consumer_key, Application.get_env(:slackreceipt, :oauth)[:private_key_contents], :rsa_sha1}
 
   def accounts do
     request(:get, "https://api.xero.com/api.xro/2.0/Accounts")
@@ -21,6 +21,8 @@ defmodule SlackReceipt.Xero do
     url = "https://api.xero.com/files.xro/1.0/Files"
 
     #request(:post, "https://api.xero.com/files.xro/1.0/Files/#{path_to_file}", [], body)
+
+    IO.inspect @consumer
 
     # Creates signed params for oauth
     signed_params = :oauth.sign(

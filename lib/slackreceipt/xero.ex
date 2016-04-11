@@ -24,6 +24,7 @@ defmodule SlackReceipt.Xero do
 
     IO.inspect @consumer
 
+
     # Creates signed params for oauth
     signed_params = :oauth.sign(
       Atom.to_string(method) |> String.upcase, String.to_char_list(url), params, @consumer, @consumer_key, ""
